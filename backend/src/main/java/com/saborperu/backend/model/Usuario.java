@@ -29,3 +29,4 @@ public class Usuario {
     private String rol; // "USER" o "ADMIN"
 }
 
+
