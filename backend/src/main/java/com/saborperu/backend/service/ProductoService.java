@@ -2,7 +2,7 @@ package com.saborperu.backend.service;
 
 import com.saborperu.backend.model.Producto;
 import com.saborperu.backend.repository.ProductoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +11,11 @@ import java.util.Optional;
 @Service
 public class ProductoService {
     
-    @Autowired
-    private ProductoRepository productoRepository;
+    private final ProductoRepository productoRepository;
+    
+    public ProductoService(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
     
     // Obtener todos los productos
     public List<Producto> obtenerTodos() {
@@ -20,7 +23,7 @@ public class ProductoService {
     }
     
     // Obtener producto por ID
-    public Optional<Producto> obtenerPorId(Long id) {
+    public Optional<Producto> obtenerPorId(@NonNull Long id) {
         return productoRepository.findById(id);
     }
     
@@ -35,12 +38,12 @@ public class ProductoService {
     }
     
     // Crear producto
-    public Producto crear(Producto producto) {
+    public Producto crear(@NonNull Producto producto) {
         return productoRepository.save(producto);
     }
     
     // Actualizar producto
-    public Producto actualizar(Long id, Producto productoActualizado) {
+    public Producto actualizar(@NonNull Long id, Producto productoActualizado) {
         return productoRepository.findById(id)
                 .map(producto -> {
                     producto.setNombre(productoActualizado.getNombre());
@@ -55,8 +58,7 @@ public class ProductoService {
     }
     
     // Eliminar producto
-    public void eliminar(Long id) {
+    public void eliminar(@NonNull Long id) {
         productoRepository.deleteById(id);
     }
 }
-

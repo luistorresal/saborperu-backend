@@ -2,7 +2,7 @@ package com.saborperu.backend.service;
 
 import com.saborperu.backend.model.Usuario;
 import com.saborperu.backend.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +11,11 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
     
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
     
     // Obtener todos los usuarios
     public List<Usuario> obtenerTodos() {
@@ -20,7 +23,7 @@ public class UsuarioService {
     }
     
     // Obtener usuario por ID
-    public Optional<Usuario> obtenerPorId(Long id) {
+    public Optional<Usuario> obtenerPorId(@NonNull Long id) {
         return usuarioRepository.findById(id);
     }
     
@@ -42,7 +45,7 @@ public class UsuarioService {
     }
     
     // Actualizar usuario
-    public Usuario actualizar(Long id, Usuario usuarioActualizado) {
+    public Usuario actualizar(@NonNull Long id, Usuario usuarioActualizado) {
         return usuarioRepository.findById(id)
                 .map(usuario -> {
                     usuario.setNombre(usuarioActualizado.getNombre());
@@ -57,15 +60,14 @@ public class UsuarioService {
     }
     
     // Eliminar usuario
-    public void eliminar(Long id) {
+    public void eliminar(@NonNull Long id) {
         usuarioRepository.deleteById(id);
     }
     
-    // Login simple (sin JWT por ahora)
+    // Login simple
     public Usuario login(String email, String password) {
         return usuarioRepository.findByEmail(email)
                 .filter(usuario -> usuario.getPassword().equals(password))
                 .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
     }
 }
-

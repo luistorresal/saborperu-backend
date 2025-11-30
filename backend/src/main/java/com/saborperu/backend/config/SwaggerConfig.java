@@ -1,8 +1,11 @@
 package com.saborperu.backend.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,11 +18,16 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("SaborPerú API")
                         .version("1.0")
-                        .description("API REST para la tienda de productos peruanos SaborPerú. " +
-                                "Incluye operaciones CRUD para productos, categorías y usuarios.")
+                        .description("API REST para la tienda de productos peruanos SaborPerú")
                         .contact(new Contact()
-                                .name("SaborPerú Team")
-                                .email("contacto@saborperu.com")));
+                                .name("SaborPerú Team")))
+                .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
+                .components(new Components()
+                        .addSecuritySchemes("Bearer Authentication",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                                        .description("Ingresa tu token JWT")));
     }
 }
-

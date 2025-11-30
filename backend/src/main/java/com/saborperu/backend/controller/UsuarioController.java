@@ -4,9 +4,9 @@ import com.saborperu.backend.model.Usuario;
 import com.saborperu.backend.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +17,11 @@ import java.util.Map;
 @Tag(name = "Usuarios", description = "API para gestión de usuarios")
 public class UsuarioController {
     
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
+    
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
     
     @GetMapping
     @Operation(summary = "Obtener todos los usuarios")
@@ -28,7 +31,7 @@ public class UsuarioController {
     
     @GetMapping("/{id}")
     @Operation(summary = "Obtener usuario por ID")
-    public ResponseEntity<Usuario> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<Usuario> obtenerPorId(@PathVariable @NonNull Long id) {
         return usuarioService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -60,7 +63,7 @@ public class UsuarioController {
     
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar usuario")
-    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<?> actualizar(@PathVariable @NonNull Long id, @RequestBody Usuario usuario) {
         try {
             Usuario usuarioActualizado = usuarioService.actualizar(id, usuario);
             return ResponseEntity.ok(usuarioActualizado);
@@ -71,9 +74,8 @@ public class UsuarioController {
     
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar usuario")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable @NonNull Long id) {
         usuarioService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 }
-

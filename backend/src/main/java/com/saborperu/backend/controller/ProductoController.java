@@ -4,9 +4,9 @@ import com.saborperu.backend.model.Producto;
 import com.saborperu.backend.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +16,11 @@ import java.util.List;
 @Tag(name = "Productos", description = "API para gestión de productos peruanos")
 public class ProductoController {
     
-    @Autowired
-    private ProductoService productoService;
+    private final ProductoService productoService;
+    
+    public ProductoController(ProductoService productoService) {
+        this.productoService = productoService;
+    }
     
     @GetMapping
     @Operation(summary = "Obtener todos los productos")
@@ -27,7 +30,7 @@ public class ProductoController {
     
     @GetMapping("/{id}")
     @Operation(summary = "Obtener producto por ID")
-    public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<Producto> obtenerPorId(@PathVariable @NonNull Long id) {
         return productoService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -47,14 +50,14 @@ public class ProductoController {
     
     @PostMapping
     @Operation(summary = "Crear nuevo producto")
-    public ResponseEntity<Producto> crear(@RequestBody Producto producto) {
+    public ResponseEntity<Producto> crear(@RequestBody @NonNull Producto producto) {
         Producto nuevoProducto = productoService.crear(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoProducto);
     }
     
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar producto existente")
-    public ResponseEntity<Producto> actualizar(@PathVariable Long id, @RequestBody Producto producto) {
+    public ResponseEntity<Producto> actualizar(@PathVariable @NonNull Long id, @RequestBody Producto producto) {
         try {
             Producto productoActualizado = productoService.actualizar(id, producto);
             return ResponseEntity.ok(productoActualizado);
@@ -65,9 +68,8 @@ public class ProductoController {
     
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar producto")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable @NonNull Long id) {
         productoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 }
-

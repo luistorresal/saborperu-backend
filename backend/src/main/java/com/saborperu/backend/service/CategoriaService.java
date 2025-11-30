@@ -2,7 +2,7 @@ package com.saborperu.backend.service;
 
 import com.saborperu.backend.model.Categoria;
 import com.saborperu.backend.repository.CategoriaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +11,11 @@ import java.util.Optional;
 @Service
 public class CategoriaService {
     
-    @Autowired
-    private CategoriaRepository categoriaRepository;
+    private final CategoriaRepository categoriaRepository;
+    
+    public CategoriaService(CategoriaRepository categoriaRepository) {
+        this.categoriaRepository = categoriaRepository;
+    }
     
     // Obtener todas las categorías
     public List<Categoria> obtenerTodas() {
@@ -20,17 +23,17 @@ public class CategoriaService {
     }
     
     // Obtener categoría por ID
-    public Optional<Categoria> obtenerPorId(Long id) {
+    public Optional<Categoria> obtenerPorId(@NonNull Long id) {
         return categoriaRepository.findById(id);
     }
     
     // Crear categoría
-    public Categoria crear(Categoria categoria) {
+    public Categoria crear(@NonNull Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
     
     // Actualizar categoría
-    public Categoria actualizar(Long id, Categoria categoriaActualizada) {
+    public Categoria actualizar(@NonNull Long id, Categoria categoriaActualizada) {
         return categoriaRepository.findById(id)
                 .map(categoria -> {
                     categoria.setNombre(categoriaActualizada.getNombre());
@@ -41,8 +44,7 @@ public class CategoriaService {
     }
     
     // Eliminar categoría
-    public void eliminar(Long id) {
+    public void eliminar(@NonNull Long id) {
         categoriaRepository.deleteById(id);
     }
 }
-
