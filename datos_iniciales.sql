@@ -49,3 +49,5 @@ SELECT p.id, p.nombre, p.precio, c.nombre as categoria
 FROM productos p 
 LEFT JOIN categorias c ON p.categoria_id = c.id;
 
+
+
