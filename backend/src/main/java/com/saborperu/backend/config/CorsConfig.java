@@ -12,9 +12,9 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins(
                     "http://localhost:3000",           // Desarrollo local
-                    "http://3.85.18.198",              // Frontend EC2 (puerto 80)
-                    "http://3.85.18.198:80",           // Frontend EC2 explícito
-                    "http://3.85.18.198:3000"          // Frontend EC2 (puerto 3000)
+                    "http://44.199.127.47",            // Frontend EC2 IP Elástica (puerto 80)
+                    "http://44.199.127.47:80",         // Frontend EC2 IP Elástica explícito
+                    "http://44.199.127.47:3000"        // Frontend EC2 IP Elástica (puerto 3000)
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
