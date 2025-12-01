@@ -71,9 +71,9 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of(
             "http://localhost:3000",           // Desarrollo local
             "http://localhost:8080",           // Backend local
-            "http://54.172.228.202",           // Frontend EC2 (puerto 80)
-            "http://54.172.228.202:80",        // Frontend EC2 explícito
-            "http://54.172.228.202:3000"       // Frontend EC2 (si usa puerto 3000)
+            "http://3.85.18.198",              // Frontend EC2 (puerto 80)
+            "http://3.85.18.198:80",           // Frontend EC2 explícito
+            "http://3.85.18.198:3000"          // Frontend EC2 (puerto 3000)
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
